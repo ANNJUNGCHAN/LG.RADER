@@ -29,7 +29,19 @@ def lg_nrmse(gt, preds):
 ```
 
 ## 개발환경
-
+<p align="center">
+  <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=TensorFlow&logoColor=white"/></a>&nbsp
+  <br>
+  <img src="https://img.shields.io/badge/pandas-150458?style=flat-square&logo=pandas&logoColor=white"/></a>&nbsp
+  <img src="https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=NumPy&logoColor=white"/></a>&nbsp
+  <img src="https://img.shields.io/badge/SciPy-8CAAE6?style=flat-square&logo=SciPy&logoColor=white"/></a>&nbsp
+  <img src="https://img.shields.io/badge/scikit-learn-F7931E?style=flat-square&logo=scikit-learn&logoColor=white"/></a>&nbsp
+  <br>
+    <img src="https://img.shields.io/badge/-LightGBM-yellow"/></a>&nbsp
+    <img src="https://img.shields.io/badge/-catboost-yellow"/></a>&nbsp
+    <img src="https://img.shields.io/badge/-byes_opt-blueviolet"/></a>&nbsp
+    <img src="https://img.shields.io/badge/-matplotlib-blue"/></a>&nbsp
+</p>
 
 ## 프로젝트 결과
 ![image](https://user-images.githubusercontent.com/89781598/189381041-bfd51ac9-5c10-49f9-9b48-a3dba3f9a2fc.png)
