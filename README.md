@@ -65,7 +65,14 @@ def lg_nrmse(gt, preds):
     - 자율주행과 레이더센서의 이해
 
 ## 프로젝트 설명
-<h3 align="center">🪄 프로젝트에 대한 설명은 차후에 적겠습니다! 🪄</h3>
+- 해당 프로젝트는 2가지 문제에 직면하게 되었다.
+- 1. 50여 개의 feature들로부터 각각의 성능지표에 대한 모델을 따로 만들어 14개의 서로 다른 성능 지표를 뽑아내야 했다.
+- 2. 정상품과 불량품의 데이터 분포를 비교해보았을 때 공정별 특징에 차이가 존재하지 않아서 딥러닝을 이용해 모델을 구축해 Seq2Seq로 데이터를 뽑아낼 경우, 정상과 불량 간의 안테나의 성능이 동일하게 예측되었다.
+- 딥러닝을 이용하여 예측을 많이 진행해보았지만, 2번 문제가 해결되지 않아 딥러닝으로 분석하기 어려웠다. 이에 대한 기록은 Trial에 남긴다.
+- 결국 머신러닝으로 문제를 해결해야 했지만, 1번 문제에 직면하게 되었다.
+- 1번 문제를 해결하기 위해서 MultiOutput Regressor를 사용하였다.
+- 베이지안 옵티마이제이션을 다중출력모델에 적용한 사례가 거의 없었으므로, 이에 대한 함수를 구축하여 다중출력모델에서도 베이지안 옵티마이제이션을 사용가능하도록 만들었다.
+- MultiOutput catboost와 MultiOutput LGBM에 다중출력 베이지안 옵티마이저를 각각 적용한 후, 각각에서 성능이 제일 좋은 2가지 모델을 선정한 후, 가장 잘 나온 모델에 2/3의 가중치를, 그 다음으로 잘 나온 모델에 1/3의 가중치를 부여하여 예측한 결과가 성능이 가장 좋았다. 이에 대한 기록은 MODEL에 남긴다.
 
 ## 파일 구조
 ```
@@ -90,9 +97,15 @@ def lg_nrmse(gt, preds):
    ┗ 📂UNET-Ensemble
    ┗ 📜UNET-Ensemble_for_validation.ipynb
 ```
-## 폴더 설명
+## 파일
 - EDA : 통계적인 기법을 사용하여 데이터를 분석한 내용에 대해서 다룹니다.
+    - ANOVA.ipynb : 57개의 features가 14개의 targets에 영향을 미치는지를 분석하기 위해서 ANOVA 검정을 시행하였다. 이 때, 수치형변수들을 모두 범주화하였다.
+    - Correlation and Distribution.ipynb : features와 targets의 분포와 상관성을 조사하였다.
+    - NULL.ipynb : 결측값을 확인하고 보간하였다.
 - MODEL : 최종적으로 가장 성능이 우수한 모델에 대한 코드입니다.
+    - MultiOutput_Catboost_Bayesian.ipynb : MultiOutput Catboost 모델에 대해서 베이지안 옵티마이저로 하이퍼 파라미터 튜닝을 진행하였으며, 결과가 잘 나온 2개의 모델을 선정하였다.
+    - MultiOutput_LGBM_Bayesian.ipynb : MultiOutput LGBM 모델에 대해서 베이지안 옵티마이저로 하이퍼 파라미터 튜닝을 진행하였으며, 결과가 잘 나온 2개의 모델을 선정하였다.
+    - Submission.ipynb : MultiOutput_Catboost_Bayesian.ipynb과 MultiOutput_LGBM_Bayesian.ipynb에서 선정한 4개의 모델을 앙상블하여 최종 결과에 반영하였다.이 때, 각각의 모델에서 제일 잘 나온 모델에 2/3의 가중치를, 그 다음으로 잘 나온 모델에 1/3가중치를 부여하였다.
 - Trial : 문제를 해결하기 위해 여러 모델링을 시도한 코드입니다.
     - AutoEncoder : AutoEncoder를 이용하여 모델을 구성해보았습니다.
     - LSTM : LSTM layer를 이용하여 장기기억을 끌고가면서 모델을 학습시키면 성능이 더욱 좋을 것이라고 판단하여 이를 이용해 모델을 구성해보았습니다.
@@ -102,31 +115,14 @@ def lg_nrmse(gt, preds):
         - 이 후, 해당 잠재벡터들을 모두 병합한 후, KFOLD 5로 5개의 모델을 각각 생성한 후, 모델들을 저장하고 Ensemble Method를 사용하여 5개의 모델을 모두 앙상블학습 시킴.
     - UNET-Ensemble
         - UNET의 구조를 착안하여 만든 모델로, UNET의 구조처럼 잠재벡터를 단계적으로 만들어나가면서, 단계별로 잠재벡터를 형성한다.
-
-## 파일 설명
-- Code.ipynb
-    - 기상청 API를 크롤링 하는 코드입니다.
-- index.xlsx
-    - 기상청 API를 크롤링하면, 열 부분이 해석할 수 없는 영어 코드명으로 나옵니다. 이를 알아볼 수 있는 한글로 변환해주기 위한 정보가 담긴 엑셀 파일입니다.
-- Best Model.json
-    - 해당 프로젝트에서 이용된 모든 모델이 담겨져 있습니다.
-- Data Preprocessing for Solar.json
-    - 일조량, 일사량, 전운량을 예측하기 위한 모델이 담겨져 있습니다.
-- Solar Power Prediction.json
-    - 태양광 발전량을 예측하기 위한 모델이 담겨져 있습니다.
-- Wind Power Prediction.json
-    - 풍력 발전량을 예측하기 위한 모델이 담겨져 있습니다.
-- Code Explanation.docx
-    - 코드를 설명하기 위한 워드 파일입니다.
-- PT.pptx
-    - PT를 위한 ppt 파일입니다. 해당 PT는 9월 15일 14시 슈피겐홀에서 진행하였습니다.
-
-## 결과 및 결언
-
-![슬라이드39](https://user-images.githubusercontent.com/89781598/189540503-e23b15ca-f8f6-4e32-921a-72b431cfd98a.JPG)
+        - UNET의 최하단에 진입했을 때, 다시 상단으로 올라가면서 예측값을 생성한다.
+        - 이 때, 상단으로 올라오는 단계별로 하단에서 만든 잠재벡터들을 아래에서 위로 끌어오면서, 모델이 하단으로 가면서 잃어버린 정보량을 최대한 보전하려고 노력한다.
+        - 이 후, 최상단에서는 최하단으로 진입하는 단계에서 단계적으로 생성한 잠재벡터들을 모두 고려한 결과값을 도출한다.
 
 ## 참고사항
-- 데이터의 경우 대회 직후 파기해야 하므로, 깃허브에 올릴 수 없는 점 양해부탁드립니다.
+- 데이터의 경우 아래의 데이콘 사이트에서 참고하실 수 있습니다.
+    - https://dacon.io/competitions/official/235927/overview/description
+- 데이콘 사이트에 코드 공유도 진행하였으니, 같이 확인해보시면 좋습니다.
 
 ## 문의사항
 * email : ajc227ung@gmail.com
