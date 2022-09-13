@@ -97,7 +97,7 @@ def lg_nrmse(gt, preds):
    ┗ 📂UNET-Ensemble
    ┗ 📜UNET-Ensemble_for_validation.ipynb
 ```
-## 파일
+## 파일 
 - EDA : 통계적인 기법을 사용하여 데이터를 분석한 내용에 대해서 다룹니다.
     - ANOVA.ipynb : 57개의 features가 14개의 targets에 영향을 미치는지를 분석하기 위해서 ANOVA 검정을 시행하였다. 이 때, 수치형변수들을 모두 범주화하였다.
     - Correlation and Distribution.ipynb : features와 targets의 분포와 상관성을 조사하였다.
