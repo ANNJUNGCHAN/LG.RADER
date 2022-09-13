@@ -44,17 +44,28 @@ def lg_nrmse(gt, preds):
 </p>
 
 ## 프로젝트 결과
-![image](https://user-images.githubusercontent.com/89781598/189381041-bfd51ac9-5c10-49f9-9b48-a3dba3f9a2fc.png)
-- 2등, 한국서부발전(주)시장상
+* public : 30/988
+![public](https://user-images.githubusercontent.com/89781598/189795628-7b00ffc2-b06e-44d6-ae6a-e23dd46e881a.png)
+
+* private : 42/988
+![private](https://user-images.githubusercontent.com/89781598/189795640-c554775c-0220-4ab7-800c-fa377c32ba21.png)
+
+* 교육 수료증
+
+![화면 캡처 2022-09-13 114246](https://user-images.githubusercontent.com/89781598/189798956-432201b0-bc56-4b11-9f2d-8c4857f0fbd7.png)
+
+## LG Aimers / Data Intelligence
+- LG AI 연구원에서 주관하는 LG Aimers / Data Intelligence 교육을 수료한 후, 해당 공모전을 진행하였습니다.
+- 교육에서는 아래의 내용을 학습하였습니다.
+    - SPC
+    - 지도학습
+    - 비지도학습
+    - 설명 가능한 AI
+    - 인과추론
+    - 자율주행과 레이더센서의 이해
 
 ## 프로젝트 설명
-<h3 align="center">🪄 해당 프로젝트는 3개의모델로 구성되어 있습니다! 🪄</h3>
-
-![슬라이드4](https://user-images.githubusercontent.com/89781598/189539548-59d43959-ce0f-4185-b209-25c37fa67c11.JPG)
-
-1. 각각의 모델에 대한 설명은 각각의 모델에 해당하는 폴더의 readme를 참고해주세요!<br>
-2. 각각의 모델에 해당하는 폴더는 Data Preprocessing for solar, Solar Power Prediction, Wind Power Prediction입니다!
-3. 크롤링에 대한 내용 또한 Data Preprocessing에 담겨져 있으니 참고 부탁드리겠습니다!
+<h3 align="center">🪄 프로젝트에 대한 설명은 차후에 적겠습니다! 🪄</h3>
 
 ## 파일 구조
 ```
@@ -79,6 +90,18 @@ def lg_nrmse(gt, preds):
    ┗ 📂UNET-Ensemble
    ┗ 📜UNET-Ensemble_for_validation.ipynb
 ```
+## 폴더 설명
+- EDA : 통계적인 기법을 사용하여 데이터를 분석한 내용에 대해서 다룹니다.
+- MODEL : 최종적으로 가장 성능이 우수한 모델에 대한 코드입니다.
+- Trial : 문제를 해결하기 위해 여러 모델링을 시도한 코드입니다.
+    - AutoEncoder : AutoEncoder를 이용하여 모델을 구성해보았습니다.
+    - LSTM : LSTM layer를 이용하여 장기기억을 끌고가면서 모델을 학습시키면 성능이 더욱 좋을 것이라고 판단하여 이를 이용해 모델을 구성해보았습니다.
+    - SDCFEModel
+        - Seperate Dense Concat Fold Ensenble Model
+        - 연관이 있는 열을 하나로 묶고, 연관성이 있는 그룹들 각각을 Dense layer로 차원을 축소하여 잠재벡터를 만듦.
+        - 이 후, 해당 잠재벡터들을 모두 병합한 후, KFOLD 5로 5개의 모델을 각각 생성한 후, 모델들을 저장하고 Ensemble Method를 사용하여 5개의 모델을 모두 앙상블학습 시킴.
+    - UNET-Ensemble
+        - UNET의 구조를 착안하여 만든 모델로, UNET의 구조처럼 잠재벡터를 단계적으로 만들어나가면서, 단계별로 잠재벡터를 형성한다.
 
 ## 파일 설명
 - Code.ipynb
